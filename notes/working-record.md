@@ -424,3 +424,29 @@ Persistence: atoms have existed for ~4×10¹⁷ s, so any decay rate of a partic
 - Focusing (hourglass, Meno): concave faces give a restoring (sign-flipped) impulse map, λ = g/(ρ₁+ρ₂); fixed-wall alternating-gradient ring stable in ~4% of geometries; thermal noise per collision ~1 in the dilute vacuum, persistence needs ~10⁻²⁰ rad per contact. Relevant to the black-hole skin (caged, dense), not to vortex persistence. Script `focus/focus_ring.py`.
 - Stage-1 solver `sim/hall2f.py` (3D periodic pseudo-spectral, two classes, locking A = (η−1)W, ν_U, ν_W, r_Ub, r_cl): ideal E and K± conserved to 10⁻⁸; exact double-Beltrami states stationary to 2×10⁻¹⁵ (`sim/validate.py`).
 - Selective decay fails in this closure (`sim/selective_decay*.py`): K± decay faster than E (K/E falls ~5×), Beltrami residual rises 0.17 → 0.6. Reason: with locking, field energy is A²-type (∝ W²) while K± = ∫P·∇×P carries one more derivative, like kinetic helicity, so it is the fragile invariant. Double-Beltrami rings are therefore not attractors here. Selective decay toward Taylor/double-Beltrami states needs the field-gradient energy Γ|∇×W|² (B²-type) to dominate, i.e. structures below the weighted skin depth ~ξ√(Γ/ν). Its consistent (Hamiltonian, non-canonical bracket) form must be derived before adding it; the periodic box also lacks the bubble confinement.
+
+## 41. Circulation formalized: two-class Lie–Poisson structure and the fluxoid
+**Variables.** Classes ± (weights ±w, densities n±, canonical momenta per particle P±, momentum densities M± = n±P±). Each class is a fluid with the relabeling symmetry of its own particles, so the dynamics is Lie–Poisson in (M±, n±) for any Hamiltonian H[M±, n±]:
+- advecting (physical) velocity v± = δH/δM±; continuity ∂t n± + ∇·(n±v±) = 0;
+- ∂t P± = v± × (∇×P±) − ∇(v±·P± + δH/δn±) + f±_diss.
+
+**Kelvin per class (exact, ideal).** For any loop C±(t) carried by v±: d/dt ∮ P±·dl = 0. The conserved circulations are those of the canonical momenta, P± = hv± ± wA: Γ± = ∮(hv± ± wA)·dl, the fluxoid of London and Onsager–Feynman, not ∮v·dl. Canonical vortex lines Ω± = ∇×P± are frozen into v±; their linkages give the canonical helicities K± = ∫P±·Ω± (exact invariants), and energy H is conserved.
+
+**Locked closure (A = κW, W = (v₊ − v₋)/2).** For a quadratic theory with a linear momentum map P = T v, consistency (δH/δM = v) requires H = ½∫v·P. With P± = v± ± (η−1)W this gives H = ∫(U² + ηW²) (h = n = 1), the energy conserved by `sim/hall2f.py`, which is this Lie–Poisson system. A positive B²-type energy Γ|∇×W|² cannot come from local locking with minimal coupling: −B²/2 in a Lagrangian with A locked to a velocity becomes negative kinetic energy. The paper's positive E_field therefore needs the field sector as an independent dynamical variable (the transverse spin flux W⁽²⁾ that carries Maxwell waves), with its own energy ½(E² + B²) and its own bracket.
+
+**Which invariant is robust.** Count derivatives relative to the dominant energy. Locked closure: E ~ W², K ~ kW² → helicity is fragile (observed in §40: K/E falls). With an independent field sector at scales where B² ~ k²W² dominates, the field helicity ∫A·B ~ kW² has fewer derivatives than the energy → robust, and selective decay drives Taylor/double-Beltrami relaxation. The crossover is the weighted skin depth ~ξ√(Γ/ν).
+
+**Dissipation and circulation.** dΓ±/dt = ∮ f±_diss·dl along the loop.
+- Drags (U–bulk, inter-class, current relaxation) act on the loop directly: −r∮(·)·dl ≠ 0. They destroy fluxoid at their rate (the §37 suppression factors are the conditions for fluxoid persistence).
+- Viscosity ν∇²v± = −ν∇×(∇×v±) changes Γ± only where ∇×v± ≠ 0 on the loop. Outside a ring core U = 0 and W is current-free, so ∇×v± = 0 and Ω± = 0 there: viscosity changes the circulation threading the ring only through vorticity that diffuses out to the loop or cancels across the axis (rate ~ν/R²).
+
+**Quantization: one integer per class.** If each class has a single-valued phase (P± = ħ∇θ± in a canonical-vorticity-free region), Γ± = n±·2πζ. The two quanta left open in §30 (circulation Γ_U and W-flux Φ_W) are combinations of the two fluxoid integers:
+- ∮U·dl = πζ(n₊ + n₋), ∮W·dl = πζ(n₊ − n₋)/η.
+- Charge ∝ overlap U·W at the edge (line: λ_q ∝ U_φW_φ r) ∝ (n₊ + n₋)(n₊ − n₋)/η × (shape/size factor) = (n₊² − n₋²)/η × geometry.
+- (1,0) and (0,1): opposite charges with equal |U| circulation (e⁻, e⁺: C as class exchange). (1,1): neutral, ∮W = 0, full circulation. Size dependence remains, so universality of e still needs the size to be fixed by the energy balance.
+- The quantization rests on single-valued class phases. With a viscous bulk outside (§40) and no ordered phase, whether such phases exist is the open question. The soliton's own internal clock is the candidate, per the §40 reading.
+
+**Consequences for the simulations.**
+1. The current solver is the exact locked Lie–Poisson system; its fragile-helicity result is a property of the closure, not a bug.
+2. The next solver adds the field sector (W⁽²⁾ or F as a dynamical field with energy ½(E² + B²)) and tracks Γ± on material loops as primary diagnostics, alongside E and K±.
+3. Formation and pair-production runs should be read in fluxoid integers: which (n₊, n₋) appear, and whether they persist.
