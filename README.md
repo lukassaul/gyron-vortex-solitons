@@ -44,3 +44,18 @@ Run every script from inside `scripts/`: several scripts load others or reuse in
 Exact: the line vortex families, the spheromak and Hill-type rings, the Beltrami pointwise charge density, the Hall-like vortex equations. Numerical: the compressible ring, the size maps, the pair and spin scans, the Hall-like solution search. Kinematic sketch only: the pair-production animation (prescribed motions, not a time evolution).
 
 Open: the flux quantum of the W-lines, g (the Hall-like rings give g = 60–2000, not 2), α, the time evolution, mass ratios. See sections 31–34 of the record.
+
+## Analysis pipeline
+
+`pipeline/` runs every target through the same scorecard:
+
+```
+python -m pipeline.run                      # all registered targets, nu = 10, Gamma = 1
+python -m pipeline.run --targets NAME ... --nu 30 --gam 0.1 --out reports
+```
+
+- `pipeline/targets.py`: target families (single Beltrami/spheromak, swirling Hill, Hall-like double Beltrami, rigid-U variants) and the registry. A new target is a pair of radial functions for W (and optionally U).
+- `pipeline/analysis.py`: the scorecard. Steadiness of the three Euler orders (R0, R1, R2) and of the two-class fluid with field coupling (canonical vorticity), winding ratio q, impulse, spin, charge (overlap with 1/η screening), moment, kinetic and field energy, fraction of U in rigid rotation (dissipation proxy), size and amplitude at fixed spin ħ/2, g, orientation, peak Mach, α.
+- Output in `reports/`: `scorecard.md`, one JSON record and one figure per target.
+
+Electron targets: q = 1, zero impulse, right orientation (moment antiparallel to spin for negative charge), g = 2, peak Mach < 1, α = 1/137. No target meets them yet; see `reports/scorecard.md`.
