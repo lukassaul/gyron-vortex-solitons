@@ -464,3 +464,8 @@ Persistence: atoms have existed for ~4×10¹⁷ s, so any decay rate of a partic
 - Hence a threshold on the engine: C = (T₀/T∥ − 1)εκ₁ > C_min = D(a_E)/E_eff(a_E). Stronger engines give smaller, thinner stable rings (a* falls and R*/a* rises with C). Script `carnot/stability.py` (§29 thin ring, J = 300, ν = 10, ν_v = 10⁻³: a_E ≈ 1.03ξ, C_min ≈ 5×10⁻³ c/ξ; stable for C ≥ 10⁻²).
 - If R is instead tied to a (closure R/a fixed, e.g. the aligned-line edge closure), E′ > 0 everywhere and the balance is always unstable: the geometry constraint must leave R free to find its mechanical equilibrium, or bring its own restoring term.
 - Lower limit: the core cannot tighten below the hollow-core (choke) radius nξ; for strong engines the stable size may pin there, which would make the core size universal at the healing length. Open: where the surplus then goes.
+
+## 44. The same engine across windings (quark rings)
+- Flow energy and viscous loss both scale as Γ², so the balanced core a* is nearly independent of the circulation: a* ≈ 0.52–0.63ξ for n = 1–5 (C = 0.03, J = 300, ν = 10; `carnot/windings.py`). A near-universal core radius for all windings.
+- The passive energy minimum a_E grows with the tension (∝ Γ²): a_E ≈ 0.22, 1.03, 2.3, 3.7, 6.3ξ for n = 1/3, 1, 2, 3, 5. So rings with n ≥ 1 sit on the stable branch (a* < a_E) and the lone 1/3-quantum ring does not (a* > a_E): the engine cannot hold a lone quark ring, an energetic reason for confinement alongside the topological one (non-single-valued phase). Three 1/3 rings on a shared core carry n = 1 together and inherit its stable balance.
+- Masses (E_eff at a*): 235, 513, 882, 1826 for n = 1, 2, 3, 5, roughly ∝ n^1.3; no lepton-like ratios at this level (toy model, J fixed).
